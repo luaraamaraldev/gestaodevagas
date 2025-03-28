@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 /**
  * @author Luara Amaral
  * @version 1.0
@@ -27,21 +25,9 @@ public class CandidatoController {
             @RequestHeader("empresa") String empresa,
             @Valid @RequestBody CandidatoEntity candidatoEntity) {
 
-        var candidatoCadastrado = CandidatoEntity.builder()
-                .id(UUID.randomUUID())
-                .nome(candidatoEntity.getNome())
-                .usuario(candidatoEntity.getUsuario())
-                .email(candidatoEntity.getEmail())
-                .senha(candidatoEntity.getSenha())
-                .descricao(candidatoEntity.getDescricao())
-                .curriculo(candidatoEntity.getCurriculo())
-                .build();
-
-        System.out.println(candidatoCadastrado);
-
         try {
-            CandidatoEntity resultFindByNomeAndId = this.candidatoService.findByNomeOrUsuario(candidatoEntity);
-            return ResponseEntity.ok(resultFindByNomeAndId);
+            CandidatoEntity cadastrarUsuario = this.candidatoService.findByNomeOrUsuario(candidatoEntity);
+            return ResponseEntity.ok(cadastrarUsuario);
         } catch (UsuarioEncontradoException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
